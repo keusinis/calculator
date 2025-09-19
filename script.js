@@ -11,6 +11,19 @@ let operator = "";
 let prevNumber = 0;
 let currentNumber = 0;
 
+const calculate = function() {
+    let result = "ERROR";
+    if(operator === "+")
+        result = prevNumber + currentNumber;
+    if(operator === "-")
+        result = prevNumber - currentNumber;
+    if(operator === "/")
+        result = prevNumber / currentNumber;
+    if(operator === "*")
+        result = prevNumber * currentNumber;
+    screenCurrent.textContent = result;
+}
+
 numbers.forEach(button => button.addEventListener("click", (e) => {
     if(screenCurrent.innerText === "0")
         screenCurrent.innerText = e.target.innerText;
@@ -36,4 +49,6 @@ operations.forEach(button => button.addEventListener("click", (e) => {
 
 equality.addEventListener("click", () => {
     screenPrev.innerText += ` ${screenCurrent.innerText} =`;
+    currentNumber = screenCurrent.textContent;
+    calculate();
 });
