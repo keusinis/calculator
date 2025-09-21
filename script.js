@@ -1,5 +1,5 @@
 const drawScreen = () => {
-    screenCurrent.innerText = Number(state.entryStr);
+    screenCurrent.innerText = state.entryStr;
     screenUpper.innerText = state.upperString;
 }
 
@@ -86,7 +86,6 @@ let state = {
     upperString: "",
     num1: "",
     num2: "",
-    result: 0,
     operator: "",
     eraseOnNewEntry: false,
 };
