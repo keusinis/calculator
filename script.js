@@ -22,7 +22,7 @@ const performOperation = (operator) => {
     let a = state.num1;
     let result = b = Number(state.entryStr);
     
-    if(!hasEntry && isEquality) 
+    if(isEquality && (!hasEntry || !hasPreviousOperator)) 
         return;
     if(hasPreviousOperator && hasEntry)
         result = operate(a, state.operator, b);   
