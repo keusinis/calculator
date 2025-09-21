@@ -22,7 +22,7 @@ const performOperation = (operator) => {
     let a = state.num1;
     let result = b = Number(state.entryStr);
     
-    if(!hasPreviousOperator && isEquality) 
+    if(!hasEntry && isEquality) 
         return;
     if(hasPreviousOperator && hasEntry)
         result = operate(a, state.operator, b);   
@@ -82,8 +82,8 @@ const clear = document.querySelector("#clear");
 const operations = document.querySelectorAll(".operation");
 
 let state = {
-    entryStr: "",
-    upperString: "",
+    entryStr: "55555",
+    upperString: "555555",
     num1: "",
     num2: "",
     operator: "",
