@@ -89,11 +89,19 @@ button{
 }
 
 button:hover {
-    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.075) inset,
-    -4px -4px 4px white inset;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.075) inset,
+    -4px -4px 4px rgba(255, 255, 255, 0.192) inset;
 }
 
 .filler {
     visibility: hidden;
     pointer-events: none;
+}
+
+#backspace {
+    font-size: 0.8rem;
+}
+
+.special {
+    background: rgba(160, 126, 126, 0.192);
 }
