@@ -1,7 +1,5 @@
 const drawScreen = function() {
-    screenCurrent.innerText = parseFloat(state.numberOnEntry) 
-    ? parseFloat(state.numberOnEntry)
-    : "0";
+    screenCurrent.innerText = state.numberOnEntry;
 
     screenUpper.innerText = state.upperString;
     console.table(state);
@@ -43,8 +41,9 @@ let state = {
 };
 
 drawScreen();
-
 numbers.forEach(button => button.addEventListener("click", (e) => {
+    if(e.target.id === "dot" && state.numberOnEntry.includes('.'))
+        return;
     state.numberOnEntry += e.target.innerText;
     drawScreen();
 }));
