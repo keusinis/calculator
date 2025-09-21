@@ -70,7 +70,7 @@ operations.forEach(button => button.addEventListener("click", (e) => {
         : 0;
         calculate();
         state.operator = e.target.innerText;
-        state.upperString = `${parseFloat(state.result).toFixed(2)} ${state.operator}`
+        state.upperString = `${state.result} ${state.operator}`
         state.numberOnEntry = "";
         drawScreen();
         state.num1 = state.result;
@@ -93,8 +93,8 @@ equality.addEventListener("click", () => {
     ? parseFloat(state.numberOnEntry)
     : 0;
     calculate();
-    state.numberOnEntry = parseFloat(parseFloat(state.result).toFixed(2).toString()).toString();
-    state.upperString = `${state.num1} ${state.operator} ${state.num2} = ${parseFloat(state.numberOnEntry)}`
+    state.numberOnEntry = state.result.toString();
+    state.upperString = `${state.num1} ${state.operator} ${state.num2} = ${state.numberOnEntry}`
     state.operator = "";
     drawScreen();
 });
