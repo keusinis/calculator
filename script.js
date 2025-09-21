@@ -1,25 +1,87 @@
-const drawScreen = function() {
+const drawScreen = () => {
     screenCurrent.innerText = state.numberOnEntry;
-
     screenUpper.innerText = state.upperString;
     console.table(state);
 }
 
-const calculate = function() {
-    const operator = state.operator;
-    const num1 = state.num1;
-    const num2 = state.num2;
-    let result = 0;
+const operate = () => {
+    let answer = 0;
+    switch(state.operator){
+        case '+':
+            answer = state.num1 + state.num2;
+            break;
+        case '-':
+            answer = state.num1 - state.num2;
+            break;
+        case '*':
+            answer = state.num1 * state.num2;
+            break;
+        case '/':
+            answer = state.num1 / state.num2;
+            break;
+    }
+    return Math.round(answer * 1000) / 1000;
+}
 
-    if (operator === '+')
-        result = num1 + num2;
-    else if (state.operator === '-')
-        result = num1 - num2;
-    else if (state.operator === '*')
-        result = num1 * num2;
-    else if (state.operator === '/')
-        result = num1 / num2;
-    state.result = result;
+const evaluate = () => {
+    if(state.operator === "" || state.numberOnEntry === "")
+        return;
+    state.num2 = parseFloat(state.numberOnEntry);
+    state.result = operate();
+
+    state.numberOnEntry = state.result.toString();
+    state.upperString = `${state.num1} ${state.operator} ${state.num2} =`
+    state.operator = "";
+    drawScreen();
+}
+
+const setOperator = (operator) => {
+    // Operator switching
+    if(state.numberOnEntry === "") {
+        if(state.num1 === "")
+            return;
+        state.operator = operator;
+        state.upperString = `${state.num1} ${state.operator}`
+        drawScreen();
+        return;
+    }
+    // Calculating with past operator
+    if(state.operator !== "") {
+        state.num2 = parseFloat(state.numberOnEntry);
+        state.result = operate();
+        state.operator = operator;
+        state.upperString = `${state.result} ${state.operator}`
+        state.numberOnEntry = "";
+        drawScreen();
+        state.num1 = state.result;
+        return;
+    }
+    state.operator = operator;
+    state.num1 = parseFloat(state.numberOnEntry);
+    state.numberOnEntry = "";
+    state.upperString = `${state.num1} ${state.operator}`;
+    drawScreen();
+}
+
+const clearScreen = () => {
+    state.numberOnEntry = "";
+    state.num1 = "";
+    state.num2 = "";
+    state.operator = "";
+    state.upperString = "";
+    drawScreen();
+}
+
+const appendNumber = (e) => {
+    if(e.target.id === "dot" && state.numberOnEntry.includes('.'))
+        return;
+    state.numberOnEntry += e.target.innerText;
+    drawScreen();
+}
+
+const eraseLastDigit = () => {
+    state.numberOnEntry = state.numberOnEntry.slice(0, -1);
+    drawScreen();
 }
 
 const buttons = document.querySelectorAll("button");
@@ -40,63 +102,12 @@ let state = {
     operator: "",
 };
 
-drawScreen();
-numbers.forEach(button => button.addEventListener("click", (e) => {
-    if(e.target.id === "dot" && state.numberOnEntry.includes('.'))
-        return;
-    state.numberOnEntry += e.target.innerText;
-    drawScreen();
-}));
+numbers.forEach(button => button.addEventListener("click", (e) => appendNumber(e)));
 
-backspace.addEventListener("click", () => {
-    state.numberOnEntry = state.numberOnEntry.slice(0, -1);
-    drawScreen();
-});
+backspace.addEventListener("click", eraseLastDigit);
 
-clear.addEventListener("click", () => {
-    state.numberOnEntry = "";
-    state.num1 = "";
-    state.num2 = "";
-    state.operator = "";
-    state.upperString = "";
-    drawScreen();
-});
+clear.addEventListener("click", clearScreen);
 
-operations.forEach(button => button.addEventListener("click", (e) => {
-    if(state.num1 === "" && state.numberOnEntry === "")
-        return;
-    if(state.num1 !== "" && state.numberOnEntry === "") {
-        state.operator = e.target.innerText;
-        state.upperString = `${state.num1} ${state.operator}`
-        drawScreen();
-        return;
-    }
-    if(state.operator !== "" && state.numberOnEntry !== "") {
-        state.num2 = parseFloat(state.numberOnEntry) 
-        calculate();
-        state.operator = e.target.innerText;
-        state.upperString = `${state.result} ${state.operator}`
-        state.numberOnEntry = "";
-        drawScreen();
-        state.num1 = state.result;
-        return;
-    }
-    state.operator = e.target.innerText;
-    state.num1 = parseFloat(state.numberOnEntry) 
-    state.numberOnEntry = "";
-    state.upperString = `${state.num1} ${state.operator}`;
-    drawScreen();
-}));
+operations.forEach(button => button.addEventListener("click", (e) => setOperator(e.target.innerText)));
 
-equality.addEventListener("click", () => {
-    if(state.operator === "")
-        return;
-    state.num2 = parseFloat(state.numberOnEntry) 
-    ? parseFloat(state.numberOnEntry)
-    : 0;
-    calculate();
-    state.numberOnEntry = state.result.toString();
-    state.upperString = `${state.num1} ${state.operator} ${state.num2} =`
-    state.operator = "";
-    drawScreen();
-});
+equality.addEventListener("click", evaluate);
