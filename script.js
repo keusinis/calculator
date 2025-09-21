@@ -1,6 +1,7 @@
 const drawScreen = () => {
     screenCurrent.innerText = Number(state.entryStr);
     screenUpper.innerText = state.upperString;
+    console.table(state);
 }
 
 const operate = (num1, operator, num2) => {
@@ -15,18 +16,17 @@ const operate = (num1, operator, num2) => {
 }
 
 const performOperation = (operator) => {
+    state.eraseOnNewEntry = false;
     const isEquality = operator === "=";
     const hasEntry = state.entryStr !== "";
     const hasPreviousOperator = state.operator !== "";
     let a = state.num1;
     let result = b = Number(state.entryStr);
-
-    if(hasPreviousOperator && hasEntry)
-        result = operate(a, state.operator, b);
-    if(hasPreviousOperator && !hasEntry) 
-        result = a;
+    
     if(!hasPreviousOperator && isEquality) 
         return;
+    if(hasPreviousOperator)
+        result = operate(a, state.operator, b);
 
     state.num1 = result;
     if(isEquality) {
