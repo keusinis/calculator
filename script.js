@@ -96,7 +96,7 @@ equality.addEventListener("click", () => {
     : 0;
     calculate();
     state.numberOnEntry = state.result.toString();
-    state.upperString = `${state.num1} ${state.operator} ${state.num2} = ${state.numberOnEntry}`
+    state.upperString = `${state.num1} ${state.operator} ${state.num2} =`
     state.operator = "";
     drawScreen();
 });
