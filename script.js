@@ -1,54 +1,100 @@
+const drawScreen = function() {
+    screenCurrent.innerText = parseFloat(state.numberOnEntry) 
+    ? parseFloat(state.numberOnEntry)
+    : "0";
+
+    screenUpper.innerText = state.upperString;
+    console.table(state);
+}
+
+const calculate = function() {
+    const operator = state.operator;
+    const num1 = state.num1;
+    const num2 = state.num2;
+    let result = 0;
+
+    if (operator === '+')
+        result = num1 + num2;
+    else if (state.operator === '-')
+        result = num1 - num2;
+    else if (state.operator === '*')
+        result = num1 * num2;
+    else if (state.operator === '/')
+        result = num1 / num2;
+    state.result = result;
+}
+
 const buttons = document.querySelectorAll("button");
 const numbers = document.querySelectorAll(".number");
 const screenCurrent = document.querySelector("#screen #current");
-const screenPrev = document.querySelector("#screen #previous");
+const screenUpper = document.querySelector("#screen #previous");
 const backspace = document.querySelector("#backspace");
 const clear = document.querySelector("#clear");
 const equality = document.querySelector("#equality");
 const operations = document.querySelectorAll(".operation");
 
-let operator = "";
-let prevNumber = 0;
-let currentNumber = 0;
+let state = {
+    numberOnEntry: "",
+    upperString: "",
+    num1: 0,
+    num2: 0,
+    result: 0,
+    operator: "",
+};
 
-const calculate = function() {
-    let result = "ERROR";
-    if(operator === "+")
-        result = prevNumber + currentNumber;
-    if(operator === "-")
-        result = prevNumber - currentNumber;
-    if(operator === "/")
-        result = prevNumber / currentNumber;
-    if(operator === "*")
-        result = prevNumber * currentNumber;
-    screenCurrent.textContent = result;
-}
+drawScreen();
 
 numbers.forEach(button => button.addEventListener("click", (e) => {
-    if(screenCurrent.innerText === "0")
-        screenCurrent.innerText = e.target.innerText;
-    else 
-        screenCurrent.innerText += e.target.innerText;
+    state.numberOnEntry += e.target.innerText;
+    drawScreen();
 }));
 
 backspace.addEventListener("click", () => {
-    screenCurrent.innerText = screenCurrent.innerText.slice(0, -1);
-    if(screenCurrent.innerText === "")
-        screenCurrent.innerText = "0";
+    state.numberOnEntry = state.numberOnEntry.slice(0, -1);
+    drawScreen();
 });
 
 clear.addEventListener("click", () => {
-    screenCurrent.innerText = "0";
+    state.numberOnEntry = "";
+    state.num1 = 0;
+    state.num2 = 0;
+    state.operator = "";
+    state.upperString = "";
+    drawScreen();
 });
 
 operations.forEach(button => button.addEventListener("click", (e) => {
-    operator = e.target.textContent;
-    prevNumber = screenCurrent.textContent;
-    screenPrev.innerText = `${prevNumber} ${operator}`;
+    if(state.operator !== "") {
+        state.num2 = parseFloat(state.numberOnEntry) 
+        ? parseFloat(state.numberOnEntry)
+        : 0;
+        calculate();
+        state.operator = e.target.innerText;
+        state.upperString = `${parseFloat(state.result).toFixed(2)} ${state.operator}`
+        state.numberOnEntry = "";
+        drawScreen();
+        state.num1 = state.result;
+        return;
+    }
+    state.operator = e.target.innerText;
+    state.num1 = parseFloat(state.numberOnEntry) 
+    ? parseFloat(state.numberOnEntry)
+    : 0;
+    
+    state.numberOnEntry = "";
+    state.upperString = `${state.num1} ${state.operator}`;
+    drawScreen();
 }));
 
 equality.addEventListener("click", () => {
-    screenPrev.innerText += ` ${screenCurrent.innerText} =`;
-    currentNumber = screenCurrent.textContent;
+    if(state.operator === "")
+        return;
+    state.num2 = parseFloat(state.numberOnEntry) 
+    ? parseFloat(state.numberOnEntry)
+    : 0;
     calculate();
+    state.numberOnEntry = parseFloat(parseFloat(state.result).toFixed(2).toString()).toString();
+    state.upperString = `${state.num1} ${state.operator} ${state.num2} = ${parseFloat(state.numberOnEntry)}`
+    state.operator = "";
+    drawScreen();
 });
