@@ -82,8 +82,8 @@ const clear = document.querySelector("#clear");
 const operations = document.querySelectorAll(".operation");
 
 let state = {
-    entryStr: "55555",
-    upperString: "555555",
+    entryStr: "",
+    upperString: "",
     num1: "",
     num2: "",
     operator: "",
