@@ -34,8 +34,8 @@ const operations = document.querySelectorAll(".operation");
 let state = {
     numberOnEntry: "",
     upperString: "",
-    num1: 0,
-    num2: 0,
+    num1: "",
+    num2: "",
     result: 0,
     operator: "",
 };
@@ -55,18 +55,24 @@ backspace.addEventListener("click", () => {
 
 clear.addEventListener("click", () => {
     state.numberOnEntry = "";
-    state.num1 = 0;
-    state.num2 = 0;
+    state.num1 = "";
+    state.num2 = "";
     state.operator = "";
     state.upperString = "";
     drawScreen();
 });
 
 operations.forEach(button => button.addEventListener("click", (e) => {
-    if(state.operator !== "") {
+    if(state.num1 === "" && state.numberOnEntry === "")
+        return;
+    if(state.num1 !== "" && state.numberOnEntry === "") {
+        state.operator = e.target.innerText;
+        state.upperString = `${state.num1} ${state.operator}`
+        drawScreen();
+        return;
+    }
+    if(state.operator !== "" && state.numberOnEntry !== "") {
         state.num2 = parseFloat(state.numberOnEntry) 
-        ? parseFloat(state.numberOnEntry)
-        : 0;
         calculate();
         state.operator = e.target.innerText;
         state.upperString = `${state.result} ${state.operator}`
@@ -77,9 +83,6 @@ operations.forEach(button => button.addEventListener("click", (e) => {
     }
     state.operator = e.target.innerText;
     state.num1 = parseFloat(state.numberOnEntry) 
-    ? parseFloat(state.numberOnEntry)
-    : 0;
-    
     state.numberOnEntry = "";
     state.upperString = `${state.num1} ${state.operator}`;
     drawScreen();
