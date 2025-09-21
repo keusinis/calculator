@@ -21,7 +21,7 @@ body {
 }
 
 .calculator {
-    width: clamp(180px, 22vw, 360px);
+    width: clamp(180px, 22vw, 220px);
     aspect-ratio: 16/25; 
     display: flex;
     border: 1px solid rgb(117, 97, 97);
@@ -58,11 +58,11 @@ body {
 }
 
 #previous {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     opacity: 0.75;
 }
 #current {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     line-height: 1;
 }
 
@@ -75,7 +75,7 @@ body {
 }
 
 button{
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     display: inline-flex;
     justify-content: center;
     align-items: center;

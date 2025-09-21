@@ -8,8 +8,8 @@ const operate = (num1, operator, num2) => {
     switch(operator){
         case '+': result = num1 + num2; break;
         case '-': result = num1 - num2; break;
-        case '*': result = num1 * num2; break;
-        case '/': result = num1 / num2; break;
+        case '×': result = num1 * num2; break;
+        case '÷': result = num1 / num2; break;
     }
     return Math.round(result * 1000) / 1000;
 }
