@@ -1,5 +1,5 @@
 const drawScreen = () => {
-    screenCurrent.innerText = state.entryStr;
+    screenCurrent.innerText = Number(state.entryStr);
     screenUpper.innerText = state.upperString;
 }
 
@@ -33,6 +33,7 @@ const performOperation = (operator) => {
         state.upperString = `${a} ${state.operator} ${b} =`;
         state.entryStr = result.toString();
         state.operator = "";
+        state.eraseOnNewEntry = true;
     }
     else {
         state.upperString = `${result} ${operator}`;
@@ -52,6 +53,10 @@ const clearScreen = () => {
 }
 
 const appendNumber = (symbol) => {
+    if(state.eraseOnNewEntry){
+        clearScreen();
+        state.eraseOnNewEntry = false;
+    }
     if(symbol === '.' && state.entryStr.includes('.'))
         return;
     state.entryStr += symbol;
@@ -59,6 +64,10 @@ const appendNumber = (symbol) => {
 }
 
 const eraseLastDigit = () => {
+    if(state.eraseOnNewEntry){
+        clearScreen();
+        state.eraseOnNewEntry = false;
+    }    
     state.entryStr = state.entryStr.slice(0, -1);
     drawScreen();
 }
@@ -78,7 +87,10 @@ let state = {
     num2: "",
     result: 0,
     operator: "",
+    eraseOnNewEntry: false,
 };
+
+drawScreen();
 
 numbers.forEach(button => button.addEventListener("click", (e) => appendNumber(e.target.innerText)));
 
