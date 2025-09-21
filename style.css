@@ -21,7 +21,7 @@ body {
 }
 
 .calculator {
-    width: clamp(180px, 22vw, 220px);
+    width: clamp(180px, 33vw, 300px);
     aspect-ratio: 16/25; 
     display: flex;
     border: 1px solid rgb(117, 97, 97);
